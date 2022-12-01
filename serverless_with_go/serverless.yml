@@ -1,0 +1,30 @@
+service: serverless-with-go
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: go1.x
+
+plugins:
+  - serverless-offline
+
+package:
+  patterns:
+    - '!./**'
+    - ./bin/**
+
+functions:
+  hello:
+    handler: bin/hello
+    events:
+      - httpApi:
+          path: /hello
+          method: get
+
+custom:
+  serverless-offline:
+    useDocker: true
+    httpPort: 4000
+    dockerReadOnly: false # allow test to write coverage result # 고는 도커 필요
+
